@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import os
+
+print("Let's start with the Host machine configuration!")
+host_ip = input("Host ip: ")
+host_user = input("Host User: ")
+remote_file_path = input("Remote file path (e.g: /home/user): ")
+current_path = os.path.dirname(os.path.abspath(__file__)) + "/commands"
+
+os.system('scp {} {}@{}:{}'.format(current_path, host_user, host_ip, remote_file_path))
+
+print("Connecting to host machine...")
+os.system('ssh -t {}@{} "chmod +x commands && ./commands"'.format(host_user, host_ip, remote_file_path))

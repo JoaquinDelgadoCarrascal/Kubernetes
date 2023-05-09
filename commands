@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import os
+
+os.system('sudo apt-get install curl')
+
+os.system('sudo apt install docker.io -y')
+os.system('sudo systemctl start docker')
+os.system('sudo systemctl enable docker')
+
+os.system('sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg')
+os.system('echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list')
+os.system('sudo apt-get update')
+os.system('sudo apt install kubeadm=1.20.0-00 kubectl=1.20.0-00 kubelet=1.20.0-00 -y')
