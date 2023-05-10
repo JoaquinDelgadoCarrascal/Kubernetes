@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import os
+
+os.system('sudo apt-get install curl')
+
+os.system('sudo apt install docker.io -y')
+os.system('sudo systemctl start docker')
+os.system('sudo systemctl enable docker')
+
+os.system('sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg')
+os.system('echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list')
+os.system('sudo apt-get update')
+os.system('sudo apt install kubeadm=1.20.0-00 kubectl=1.20.0-00 kubelet=1.20.0-00 -y')
+os.system('sudo swapoff -a')
+
+os.system('sudo kubeadm init')
+os.system('mkdir -p $HOME/.kube')
+os.system('sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config')
+os.system('sudo chown $(id -u):$(id -g) $HOME/.kube/config')
+os.system('kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml')
+
+output = os.popen("kubeadm token create --print-join-command").read()
+print(output)
+lines = output.strip().split('\n')
+last_two_lines = '\n'.join(lines[-1:])
+
+with open('.cmd.txt', 'w') as f:
+    f.write(last_two_lines)

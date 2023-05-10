@@ -1,13 +1,43 @@
 #!/usr/bin/env python3
 import os
 
+# ######################
+# # HOST CONFIGURATION #
+# ######################
+
 print("Let's start with the Host machine configuration!")
-host_ip = input("Host ip: ")
+host_ip = input("Host IP: ")
 host_user = input("Host User: ")
 remote_file_path = input("Remote file path (e.g: /home/user): ")
-current_path = os.path.dirname(os.path.abspath(__file__)) + "/commands"
+commands_host_path = os.path.dirname(os.path.abspath(__file__)) + "/commands_host"
 
-os.system('scp {} {}@{}:{}'.format(current_path, host_user, host_ip, remote_file_path))
+os.system('scp {} {}@{}:{}'.format(commands_host_path, host_user, host_ip, remote_file_path))
 
 print("Connecting to host machine...")
-os.system('ssh -t {}@{} "chmod +x commands && ./commands"'.format(host_user, host_ip, remote_file_path))
+os.system('ssh -t {}@{} "chmod +x commands_host && ./commands_host"'.format(host_user, host_ip, remote_file_path))
+os.system('scp {}@{}:{} {}'.format(host_user, host_ip, remote_file_path + "/.cmd.txt", "."))
+
+#######################
+# NODES CONFIGURATION #
+#######################
+
+# print("Let's continue with the nodes machines configuration!")
+
+# while True:
+#     try:
+#         num_nodes = int(input("How many nodes do you want?: "))
+#         if num_nodes <= 0:
+#             print("\nYou need to have at least one node.\n")
+#         else:
+#             break
+#     except ValueError:
+#         print("\nPlease enter a valid number.\n")
+
+# commands_node_path = os.path.dirname(os.path.abspath(__file__)) + "/commands_node"
+
+# for i in range(num_nodes):
+#     node_ip = input("Node IP for node {}:".format(i + 1))
+#     node_user = input("Node User for node {}:".format(i + 1))
+#     remote_file_path = input("Remote file path for node {} (e.g: /home/user):".format(i + 1))
+
+#     os.system('scp {} {}@{}:{}'.format(commands_node_path, node_user, node_ip, remote_file_path))
