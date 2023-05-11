@@ -14,16 +14,7 @@ os.system('sudo apt-get update')
 os.system('sudo apt install kubeadm=1.20.0-00 kubectl=1.20.0-00 kubelet=1.20.0-00 -y')
 os.system('sudo swapoff -a')
 
-os.system('sudo kubeadm init')
-os.system('mkdir -p $HOME/.kube')
-os.system('sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config')
-os.system('sudo chown $(id -u):$(id -g) $HOME/.kube/config')
-os.system('kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml')
-
-output = os.popen("kubeadm token create --print-join-command").read()
-print(output)
-lines = output.strip().split('\n')
-last_two_lines = '\n'.join(lines[-1:])
-
-with open('.cmd.txt', 'w') as f:
-    f.write("sudo " + last_two_lines)
+os.system('cat .cmd.txt')
+with open(".cmd.txt", "r") as f:
+    command = f.read().strip()
+    os.system(command)
