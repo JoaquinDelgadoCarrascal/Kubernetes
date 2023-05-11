@@ -24,7 +24,11 @@ commands_host_path = os.path.dirname(os.path.abspath(__file__)) + "/commands_hos
 os.system('scp {} {}@{}:{}'.format(commands_host_path, host_user, host_ip, remote_file_path))
 
 print("Connecting to host machine . . .")
-os.system('ssh -t {}@{} "chmod +x commands_host && ./commands_host"'.format(host_user, host_ip, remote_file_path))
+try:
+    os.system('ssh -t {}@{} "chmod +x commands_host && ./commands_host"'.format(host_user, host_ip, remote_file_path))
+except Exception:
+    print ("SSH not installed or authentication failed.")
+    exit(84)
 os.system('scp {}@{}:{} {}'.format(host_user, host_ip, remote_file_path + "/.cmd.txt", "."))
 
 #######################
@@ -53,4 +57,8 @@ for i in range(num_nodes):
 
     os.system('scp {} {} {}@{}:{}'.format(commands_node_path, cmd_path, node_user, node_ip, remote_file_path))
     print("Connecting to node {} machine . . .".format(i + 1))
-    os.system('ssh -t {}@{} "chmod +x commands_node && ./commands_node"'.format(node_user, node_ip, remote_file_path))
+    try:
+        os.system('ssh -t {}@{} "chmod +x commands_node && ./commands_node"'.format(node_user, node_ip, remote_file_path))
+    except Exception:
+        print ("SSH not installed or authentication failed.")
+        exit(84)
