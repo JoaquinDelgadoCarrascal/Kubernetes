@@ -2,17 +2,22 @@
 
 import os
 
+os.system("grep -v 'swap' '/etc/fstab' > 'tmp.txt'")
+os.system("grep 'swap' '/etc/fstab' | sed 's/^/# /' >> 'tmp.txt'")
+os.system("sudo mv 'tmp.txt' '/etc/fstab'")
+os.system('sudo swapoff -a')
 os.system('sudo apt-get install curl')
 
 os.system('sudo apt install docker.io -y')
 os.system('sudo systemctl start docker')
 os.system('sudo systemctl enable docker')
 
-os.system('sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg')
-os.system('echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list')
+os.system('sudo apt install curl apt-transport-https -y')
+os.system('curl -fsSL  https://packages.cloud.google.com/apt/doc/apt-key.gpg|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/k8s.gpg')
+os.system('curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -')
+os.system('echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list')
 os.system('sudo apt-get update')
-os.system('sudo apt install kubeadm=1.20.0-00 kubectl=1.20.0-00 kubelet=1.20.0-00 -y')
-os.system('sudo swapoff -a')
+os.system('sudo apt install kubeadm kubectl kubelet -y')
 
 os.system('cat .cmd.txt')
 with open(".cmd.txt", "r") as f:

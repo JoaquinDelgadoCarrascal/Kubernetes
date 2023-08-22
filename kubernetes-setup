@@ -35,7 +35,7 @@ os.system('scp {}@{}:{} {}'.format(host_user, host_ip, remote_file_path + "/.cmd
 # NODES CONFIGURATION #
 #######################
 
-print("Let's continue with the nodes machines configuration!")
+print("-----------\nLet's continue with the nodes machines configuration!")
 
 while True:
     try:
